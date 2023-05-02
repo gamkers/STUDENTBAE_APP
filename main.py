@@ -191,8 +191,7 @@ def check_password():
         """Checks whether a password entered by the user is correct."""
         if (
             st.session_state["username"] in st.secrets["user"]
-            and st.session_state["password"]
-            == st.secrets["pass"][st.session_state["username"]]
+            and st.session_state["password"] == st.secrets["pass"][st.session_state["username"]]
         ):
             st.session_state["password_correct"] = True
             del st.session_state["password"]  # don't store username + password
