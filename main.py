@@ -182,142 +182,181 @@ st.markdown(hide_menu_style, unsafe_allow_html=True)
 
 #         st.write("_______________________________________________________________________________")
 
+import streamlit as st
 
-selected2 = option_menu(None, ["Home",'Search',"Assistant"],
-                        icons=['house', 'files','robot'],
-                        menu_icon="cast", default_index=2, orientation="horizontal")
+def check_password():
+    """Returns `True` if the user had a correct password."""
 
+    def password_entered():
+        """Checks whether a password entered by the user is correct."""
+        if (
+            st.session_state["username"] in st.secrets["passwords"]
+            and st.session_state["password"]
+            == st.secrets["passwords"][st.session_state["username"]]
+        ):
+            st.session_state["password_correct"] = True
+            del st.session_state["password"]  # don't store username + password
+            del st.session_state["username"]
+        else:
+            st.session_state["password_correct"] = False
 
-def lottieurl(url):
-    r = requests.get(url)
-    if r.status_code != 200:
-        return None
-    return r.json()
+    if "password_correct" not in st.session_state:
+        # First run, show inputs for username + password.
+        st.text_input("Username", on_change=password_entered, key="username")
+        st.text_input(
+            "Password", type="password", on_change=password_entered, key="password"
+        )
+        return False
+    elif not st.session_state["password_correct"]:
+        # Password not correct, show input + error.
+        st.text_input("Username", on_change=password_entered, key="username")
+        st.text_input(
+            "Password", type="password", on_change=password_entered, key="password"
+        )
+        st.error("😕 User not known or password incorrect")
+        return False
+    else:
+        # Password correct.
+        return True
 
-
-lottie_coding = lottieurl("https://assets10.lottiefiles.com/packages/lf20_i9mtrven.json")
-lottie_coding2 = lottieurl("https://assets8.lottiefiles.com/packages/lf20_2LdLki.json")
-lottie_coding3 = lottieurl("https://assets8.lottiefiles.com/packages/lf20_oyi9a28g.json")
-
-if selected2 == 'Home':
-    st.image("logofinal.png")
-    with st.container():
-        st.write("---")
-        left_coloumn, right_coloumn = st.columns(2)
-        with left_coloumn:
-            st.subheader("LEARNING The Journey Of The Life Time")
-            st.title("STUDENTBAE")
-            st.write(
-                "STUDENTBAE is a web-based application that helps students assist with their tasks and make their lives easier. in recent eras, the educational system evolved a lot and most organisations moved from pen and paper method to totally to online mode, So we help students to get their resources easily and quickly. We provide our users with a personalized search engine for studies, there students can get PDFs, Slides, Notes, Courses, Research  papers, Question Papers, and E-books.")
-            st.write("[DOWNLOAD NOW >](https://newsify.en.uptodown.com/android)")
-
-        with right_coloumn:
-            st.image("hero.png")
-
-    with st.container():
-        st.write("---")
-        left_coloumn, right_coloumn = st.columns(2)
-        with left_coloumn:
-            st.image("hero3.png")
-
-        with right_coloumn:
-            st.header("WHY STUDENTBAE?")
-            st.write("##")
-            st.write(
-                """
-                There is a huge dataflow on the internet and it makes deficult to search notes or resources for students so we collect notes from all over the internet and categorised the resorces provide them to the users, we constantly try to update more features fix issues faced by students. The features listed belowr""")
-
+if check_password():
+    st.write("Here goes your normal Streamlit app...")
+    st.button("Click me")
+    selected2 = option_menu(None, ["Home",'Search',"Assistant"],
+                            icons=['house', 'files','robot'],
+                            menu_icon="cast", default_index=2, orientation="horizontal")
 
 
-
-elif selected2 == 'Search':
-    st.image("search1.png")
-    def local_css(file_name):
-        with open(file_name) as f:
-            st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-
-
-    def remote_css(url):
-        st.markdown(f'<link href="{url}" rel="stylesheet">', unsafe_allow_html=True)
+    def lottieurl(url):
+        r = requests.get(url)
+        if r.status_code != 200:
+            return None
+        return r.json()
 
 
-    def icon(icon_name):
-        st.markdown(f'<i class="material-icons">{icon_name}</i>', unsafe_allow_html=True)
+    lottie_coding = lottieurl("https://assets10.lottiefiles.com/packages/lf20_i9mtrven.json")
+    lottie_coding2 = lottieurl("https://assets8.lottiefiles.com/packages/lf20_2LdLki.json")
+    lottie_coding3 = lottieurl("https://assets8.lottiefiles.com/packages/lf20_oyi9a28g.json")
+
+    if selected2 == 'Home':
+        st.image("logofinal.png")
+        with st.container():
+            st.write("---")
+            left_coloumn, right_coloumn = st.columns(2)
+            with left_coloumn:
+                st.subheader("LEARNING The Journey Of The Life Time")
+                st.title("STUDENTBAE")
+                st.write(
+                    "STUDENTBAE is a web-based application that helps students assist with their tasks and make their lives easier. in recent eras, the educational system evolved a lot and most organisations moved from pen and paper method to totally to online mode, So we help students to get their resources easily and quickly. We provide our users with a personalized search engine for studies, there students can get PDFs, Slides, Notes, Courses, Research  papers, Question Papers, and E-books.")
+                st.write("[DOWNLOAD NOW >](https://newsify.en.uptodown.com/android)")
+
+            with right_coloumn:
+                st.image("hero.png")
+
+        with st.container():
+            st.write("---")
+            left_coloumn, right_coloumn = st.columns(2)
+            with left_coloumn:
+                st.image("hero3.png")
+
+            with right_coloumn:
+                st.header("WHY STUDENTBAE?")
+                st.write("##")
+                st.write(
+                    """
+                    There is a huge dataflow on the internet and it makes deficult to search notes or resources for students so we collect notes from all over the internet and categorised the resorces provide them to the users, we constantly try to update more features fix issues faced by students. The features listed belowr""")
 
 
-    local_css("style.css")
-    remote_css('https://fonts.googleapis.com/icon?family=Material+Icons')
 
 
-    form = st.form(key='my-form')
-
-    selected = form.text_input("", "")
-    submit = form.form_submit_button("SEARCH")
-
-    options = st.multiselect(
-        'What you Looking for?',
-        ['PDF', 'PPT', 'Courses', 'Research papers','Hacker Rank',"MCQ's",'Question Papers', 'E-BOOKS']
-    )
-
-    n = st.slider('File Count', 0, 130, 25)
-
-    if submit:
-        if "PDF" in options:
-            pdf(selected)
-        elif "PPT" in options:
-            ppt(selected)
-        elif "Courses" in options:
-            st.write('''Fair Use Act Disclaimer
-         This site is for educational purposes only!!
-                            **FAIR USE**
-      Copyright Disclaimer under section 107 of the Copyright Act 1976, allowance 
-      is made for “fair use” for purposes such as criticism, comment, news reporting, teaching, 
-      scholarship, education and research.Fair use is a use permitted by copyright statute that might
-      otherwise be infringing. Non-profit, educational or personal use 
-      tips the balance in favor of fair use. ''')
-            torrent_download(selected)
-        elif "Research papers" in options:
-            selected = f"{selected} research papers"
-            pdf(selected)
-        elif "Question Papers" in options:
-            selected = f"{selected} Question Papers"
-            pdf(selected)
-        elif "E-BOOKS" in options:
-            selected = f"{selected} BOOK"
-            pdf(selected)
-        elif "Hacker Rank" in options:
-            st.write(f"[OPEN >](https://www.hackerrank.com/domains/{selected})")
-        elif "MCQ's" in options:
-            
-            webscrap_mcq(selected)
-            
-
-elif selected2 == 'Assistant':
-    st.image("colab.png")
-    def local_css(file_name):
-        with open(file_name) as f:
-            st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+    elif selected2 == 'Search':
+        st.image("search1.png")
+        def local_css(file_name):
+            with open(file_name) as f:
+                st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 
-    def remote_css(url):
-        st.markdown(f'<link href="{url}" rel="stylesheet">', unsafe_allow_html=True)
+        def remote_css(url):
+            st.markdown(f'<link href="{url}" rel="stylesheet">', unsafe_allow_html=True)
 
 
-    def icon(icon_name):
-        st.markdown(f'<i class="material-icons">{icon_name}</i>', unsafe_allow_html=True)
+        def icon(icon_name):
+            st.markdown(f'<i class="material-icons">{icon_name}</i>', unsafe_allow_html=True)
 
 
-    local_css("style.css")
-    remote_css('https://fonts.googleapis.com/icon?family=Material+Icons')
+        local_css("style.css")
+        remote_css('https://fonts.googleapis.com/icon?family=Material+Icons')
 
 
-    form = st.form(key='my-form')
+        form = st.form(key='my-form')
 
-    selected = form.text_input("", "")
+        selected = form.text_input("", "")
+        submit = form.form_submit_button("SEARCH")
 
-    submit = form.form_submit_button("SEARCH")
-    
-    #n = st.slider('number of lines', 0.0, 1,0, 0.1)
-    
-    if submit:
-        ai(selected,1.0)
+        options = st.multiselect(
+            'What you Looking for?',
+            ['PDF', 'PPT', 'Courses', 'Research papers','Hacker Rank',"MCQ's",'Question Papers', 'E-BOOKS']
+        )
+
+        n = st.slider('File Count', 0, 130, 25)
+
+        if submit:
+            if "PDF" in options:
+                pdf(selected)
+            elif "PPT" in options:
+                ppt(selected)
+            elif "Courses" in options:
+                st.write('''Fair Use Act Disclaimer
+             This site is for educational purposes only!!
+                                **FAIR USE**
+          Copyright Disclaimer under section 107 of the Copyright Act 1976, allowance 
+          is made for “fair use” for purposes such as criticism, comment, news reporting, teaching, 
+          scholarship, education and research.Fair use is a use permitted by copyright statute that might
+          otherwise be infringing. Non-profit, educational or personal use 
+          tips the balance in favor of fair use. ''')
+                torrent_download(selected)
+            elif "Research papers" in options:
+                selected = f"{selected} research papers"
+                pdf(selected)
+            elif "Question Papers" in options:
+                selected = f"{selected} Question Papers"
+                pdf(selected)
+            elif "E-BOOKS" in options:
+                selected = f"{selected} BOOK"
+                pdf(selected)
+            elif "Hacker Rank" in options:
+                st.write(f"[OPEN >](https://www.hackerrank.com/domains/{selected})")
+            elif "MCQ's" in options:
+
+                webscrap_mcq(selected)
+
+
+    elif selected2 == 'Assistant':
+        st.image("colab.png")
+        def local_css(file_name):
+            with open(file_name) as f:
+                st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+
+        def remote_css(url):
+            st.markdown(f'<link href="{url}" rel="stylesheet">', unsafe_allow_html=True)
+
+
+        def icon(icon_name):
+            st.markdown(f'<i class="material-icons">{icon_name}</i>', unsafe_allow_html=True)
+
+
+        local_css("style.css")
+        remote_css('https://fonts.googleapis.com/icon?family=Material+Icons')
+
+
+        form = st.form(key='my-form')
+
+        selected = form.text_input("", "")
+
+        submit = form.form_submit_button("SEARCH")
+
+        #n = st.slider('number of lines', 0.0, 1,0, 0.1)
+
+        if submit:
+            ai(selected,1.0)
