@@ -218,8 +218,7 @@ def check_password():
         return True
 
 if True:
-    st.write("Here goes your normal Streamlit app...")
-    st.button("Click me")
+    
     selected2 = option_menu(None, ["Home",'Search',"Assistant"],
                             icons=['house', 'files','robot'],
                             menu_icon="cast", default_index=2, orientation="horizontal")
