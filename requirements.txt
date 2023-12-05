@@ -6,5 +6,5 @@ streamlit-option-menu
 gTTS
 requires.io
 google
-openai
+openai==1.0.0
 deta
