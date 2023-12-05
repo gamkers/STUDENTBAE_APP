@@ -182,100 +182,8 @@ st.markdown(hide_menu_style, unsafe_allow_html=True)
 
 #         st.write("_______________________________________________________________________________")
 
-def check_password1():
-    """Returns `True` if the user had a correct password."""
 
-    def password_entered():
-        deta = Deta(st.secrets["data_key"])
-        db = deta.Base("USERS")
-        db_content = db.fetch().items
 
-        entered_username = st.session_state["username"]
-        entered_password = st.session_state["password"]
-
-        for item in db_content:
-            if item["username"] == entered_username and item["password"] == entered_password:
-                st.session_state["password_correct"] = True
-                del st.session_state["password"]  # don't store username + password
-                del st.session_state["username"]
-                return
-
-        st.session_state["password_correct"] = False
-
-    if "password_correct" not in st.session_state:
-        # First run, show inputs for username + password.
-        st.text_input("Username", key="username")
-        st.text_input(
-            "Password", type="password", key="password"
-        )
-        login_button = st.button("Login")
-        if login_button:
-            password_entered()
-            if st.session_state["password_correct"]:
-                return True
-            else:
-                st.error("😕 User not known or password incorrect")
-                return False
-        return False
-    else:
-        # Password correct.
-        return True
-
-import streamlit as st
-from deta import Deta
-
-def is_username_available(username):
-    deta = Deta(st.secrets["data_key"])
-    db = deta.Base("USERS")
-    db_content = db.fetch().items
-    for item in db_content:
-      if item["username"] == username:
-        return False
-    return True
-  
-def register():
-    with st.form("registration_form"):
-      
-      if "registration_state" not in st.session_state:
-          st.session_state.registration_state = {
-              "new_username": "",
-              "new_password": "",
-              "confirm_new_password": ""
-          }
-      
-      new_username = st.text_input("New Username", key="new_username", value=st.session_state.registration_state["new_username"])
-      new_password = st.text_input("New Password", type="password", key="new_password", value=st.session_state.registration_state["new_password"])
-      confirm_new_password = st.text_input("Confirm New Password", type="password", key="confirm_new_password", value=st.session_state.registration_state["confirm_new_password"])
-    
-      if st.form_submit_button("Register"):
-            deta = Deta(st.secrets["data_key"])
-            db = deta.Base("USERS")
-            db.put({"username": new_username.lower(), "password": new_password, "api_key": ""})
-                        
-
-def is_username_available(username):
-    deta = Deta(st.secrets["data_key"])
-    db = deta.Base("USERS")
-    db_content = db.fetch().items
-
-    for item in db_content:
-        if item["username"] == username:
-            return False
-    
-    return True
-
-def is_strong_password(password):
-    # Password must contain at least 8 characters, including uppercase, lowercase, and special characters
-    if len(password) < 8:
-        return False
-    if not re.search(r"[A-Z]", password):
-        return False
-    if not re.search(r"[a-z]", password):
-        return False
-    if not re.search(r"\W", password):
-        return False
-    
-    return True
   
 def password_entered():
     deta = Deta(st.secrets["data_key"])
@@ -301,9 +209,6 @@ def check_password():
         st.text_input("Password", type="password", key="password")
         login_button = st.button("Login")
         
-        register_now_button = st.button("Register Now")
-        if register_now_button:
-            register()
 
         if login_button:
             password_entered()
