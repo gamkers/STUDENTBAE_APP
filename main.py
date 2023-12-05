@@ -247,26 +247,11 @@ def register():
       new_password = st.text_input("New Password", type="password", key="new_password", value=st.session_state.registration_state["new_password"])
       confirm_new_password = st.text_input("Confirm New Password", type="password", key="confirm_new_password", value=st.session_state.registration_state["confirm_new_password"])
     
-      if st.form_submit_button("Validate"):
-            if is_strong_password(password):
-                st.success("Password meets the strength criteria.")
-            else:
-                st.error("Password must contain at least 8 characters, including uppercase, lowercase, and special characters.")
-    with st.form("api_key_form"):
-        
-        if st.form_submit_button("Register"):
-            if api_key:
-                if is_username_available(username):
-                    deta = Deta(st.secrets["data_key"])
-                    db = deta.Base("USERS")
-                    db.put({"username":new_username, "password": new_password, "api_key": "123"})
-                    st.success("Registration Successful. Please log in.")
-                else:
-                    st.error("Username already exists. Please choose a different username.")
-            else:
-                st.warning("Please provide the API key to complete the registration.")
-
-                st.warning("Please provide the API key to complete the registration.")
+      if st.form_submit_button("Register"):
+            deta = Deta(st.secrets["data_key"])
+            db = deta.Base("USERS")
+            db.put({"username": new_username.lower(), "password": new_password, "api_key": ""})
+                        
 
 def is_username_available(username):
     deta = Deta(st.secrets["data_key"])
