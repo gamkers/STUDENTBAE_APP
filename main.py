@@ -282,7 +282,7 @@ def check_password1():
         return False
     else:
         # Password correct.
-        return True
+        return False
 
 
 if check_password1():
