@@ -5,7 +5,7 @@ import streamlit as st
 from gtts import gTTS
 from io import BytesIO
 import openai
-
+from deta import Deta
 st.set_page_config(page_title="STUDENTBAE", page_icon=":tada:", layout='wide')
 page_bg_img = f"""
 <style>
