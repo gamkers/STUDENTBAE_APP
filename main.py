@@ -29,7 +29,7 @@ restart_sequence = "\nHuman: "
 
 def ai(prompt,n):
 
-  response = openai.completions.create
+  response = openai.completions.create(
     model="text-davinci-003",
     prompt=prompt,
     temperature=n,
