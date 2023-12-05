@@ -60,9 +60,11 @@ def pdf(s):
         if ".pdf" in j:
             pdf_title = j.split("/")[-1]
             st.header(pdf_title)
-            st.components.v1.iframe(j, width=700, height=500)
+            st.markdown(f"""
+            <embed src={j} width="800" height="800">
+            """, unsafe_allow_html=True)
             # Add a download button for the PDF or display it
-            if st.button('DOWNLOAD'):
+            if st.button(f'DOWNLOAD {pdf_title} '):
                 st.markdown(f"Download [{pdf_title}]({j})")
 
 def webscrap_mcq(command): 
