@@ -56,7 +56,7 @@ def pdf(s):
       except ImportError:
           print("No module named 'google' found")
 
-      query = s
+      query = f"{s} filetype:pdf"
       for j in search(query, tld="co.in", num=10, stop=5, pause=2):
           if ".pdf" in j:
               k = j.split("/")
@@ -365,3 +365,4 @@ if check_password():
 
         if submit:
             ai(selected,1.0)
+  
