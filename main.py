@@ -184,6 +184,8 @@ st.markdown(hide_menu_style, unsafe_allow_html=True)
 
 import streamlit as st
 
+import streamlit as st
+
 def check_password():
     """Returns `True` if the user had a correct password."""
 
@@ -204,6 +206,10 @@ def check_password():
         st.text_input(
             "Password", type="password", on_change=password_entered, key="password"
         )
+        login_button = st.button("Login")
+        if login_button:
+            password_entered()
+            return st.session_state["password_correct"]
         return False
     elif not st.session_state["password_correct"]:
         # Password not correct, show input + error.
@@ -212,12 +218,17 @@ def check_password():
             "Password", type="password", on_change=password_entered, key="password"
         )
         st.error("😕 User not known or password incorrect")
+        login_button = st.button("Login")
+        if login_button:
+            password_entered()
+            return st.session_state["password_correct"]
         return False
     else:
         # Password correct.
         return True
 
-if True:
+
+if check_password():
     
     selected2 = option_menu(None, ["Home",'Search',"Assistant"],
                             icons=['house', 'files','robot'],
