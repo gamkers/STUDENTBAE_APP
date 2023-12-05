@@ -230,39 +230,39 @@ def is_username_available(username):
     return db.get(username.lower()) is None
 
 def register():
-    st.subheader("Register")
-    
-    if "registration_state" not in st.session_state:
-        st.session_state.registration_state = {
-            "new_username": "",
-            "new_password": "",
-            "confirm_new_password": ""
-        }
-    
-    new_username = st.text_input("New Username", key="new_username", value=st.session_state.registration_state["new_username"])
-    new_password = st.text_input("New Password", type="password", key="new_password", value=st.session_state.registration_state["new_password"])
-    confirm_new_password = st.text_input("Confirm New Password", type="password", key="confirm_new_password", value=st.session_state.registration_state["confirm_new_password"])
-    register_button = st.button("Register")
-
-    if register_button:
-        if new_password == confirm_new_password:
-            if len(new_password) >= 8:  # Check password length
-                if is_username_available(new_username):
-                    deta = Deta(st.secrets["data_key"])
-                    db = deta.Base("USERS")
-                    db.put({"username": new_username.lower(), "password": new_password, "api_key": ""})
-                    st.success("Registration Successful. Please log in.")
-                else:
-                    st.error("Username already exists. Please choose a different username.")
-            else:
-                st.error("Password must be at least 8 characters long.")
-        else:
-            st.error("Passwords do not match. Please try again.")
-    
-    # Update session state with the entered values
-    st.session_state.registration_state["new_username"] = new_username
-    st.session_state.registration_state["new_password"] = new_password
-    st.session_state.registration_state["confirm_new_password"] = confirm_new_password
+    with st.form("registration_form"):
+      
+      if "registration_state" not in st.session_state:
+          st.session_state.registration_state = {
+              "new_username": "",
+              "new_password": "",
+              "confirm_new_password": ""
+          }
+      
+      new_username = st.text_input("New Username", key="new_username", value=st.session_state.registration_state["new_username"])
+      new_password = st.text_input("New Password", type="password", key="new_password", value=st.session_state.registration_state["new_password"])
+      confirm_new_password = st.text_input("Confirm New Password", type="password", key="confirm_new_password", value=st.session_state.registration_state["confirm_new_password"])
+      register_button = st.button("Register")
+  
+      if register_button:
+          if new_password == confirm_new_password:
+              if len(new_password) >= 8:  # Check password length
+                  if is_username_available(new_username):
+                      deta = Deta(st.secrets["data_key"])
+                      db = deta.Base("USERS")
+                      db.put({"username": new_username.lower(), "password": new_password, "api_key": ""})
+                      st.success("Registration Successful. Please log in.")
+                  else:
+                      st.error("Username already exists. Please choose a different username.")
+              else:
+                  st.error("Password must be at least 8 characters long.")
+          else:
+              st.error("Passwords do not match. Please try again.")
+      
+      # Update session state with the entered values
+      st.session_state.registration_state["new_username"] = new_username
+      st.session_state.registration_state["new_password"] = new_password
+      st.session_state.registration_state["confirm_new_password"] = confirm_new_password
 
 def password_entered():
     deta = Deta(st.secrets["data_key"])
