@@ -58,11 +58,12 @@ def pdf(s):
     query = f"{s} filetype:pdf"
     for j in search(query, tld="co.in", num=10, stop=5, pause=2):
         if ".pdf" in j:
-            k = j.split("/")
-            st.header(k[-1])
-            st.components.v1.iframe(j)
-#             if st.button('DOWNLOAD'):
-#                st.components.v1.iframe(j)
+            pdf_title = j.split("/")[-1]
+            st.header(pdf_title)
+            st.components.v1.iframe(j, width=700, height=500)
+            # Add a download button for the PDF or display it
+            if st.button('DOWNLOAD'):
+                st.markdown(f"Download [{pdf_title}]({j})")
 
 def webscrap_mcq(command): 
     links=[]
