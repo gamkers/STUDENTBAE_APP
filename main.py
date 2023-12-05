@@ -234,41 +234,7 @@ def password_entered(username, password):
 
 
 
-def check_password():
-    """Returns `True` if the user had a correct password."""
-
-    def password_entered():
-        """Checks whether a password entered by the user is correct."""
-        if (
-            st.session_state["username"] in st.secrets["user"] and st.session_state["password"] == st.secrets["pass"]
-        ):
-            st.session_state["password_correct"] = True
-            del st.session_state["password"]  # don't store username + password
-            del st.session_state["username"]
-        else:
-            st.session_state["password_correct"] = False
-
-    if "password_correct" not in st.session_state:
-        # First run, show inputs for username + password.
-        st.text_input("Username", key="username")
-        st.text_input(
-            "Password", type="password", key="password"
-        )
-        login_button = st.button("Login")
-        if login_button:
-            password_entered()
-            if st.session_state["password_correct"]:
-                return True
-            else:
-                st.error("😕 User not known or password incorrect")
-                return False
-        return False
-    else:
-        # Password correct.
-        return True
-
-
-if check_password1():
+if check_password():
     
     selected2 = option_menu(None, ["Home",'Search',"Assistant"],
                             icons=['house', 'files','robot'],
