@@ -289,9 +289,9 @@ def check_password():
                 st.error("😕 User not known or password incorrect")
                 return False
       
-        register_button = st.button("Register")
+        register_now = st.button("Register Now")
         
-        if register_button:
+        if register_now:
             register()
         
         return False
