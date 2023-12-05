@@ -63,7 +63,8 @@ def pdf(s):
               for i in k:
                   if ".pdf" in i:
                       st.write(i)
-              st.markdown(f'<a href="{j}">DOWNLOAD</a>', unsafe_allow_html=True)
+              if st.button(f'DOWNLOAD {i}'):
+                st.components.v1.iframe(j)
     except:
        st.error("PDF NOT Found")
 def webscrap_mcq(command): 
