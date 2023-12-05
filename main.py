@@ -217,9 +217,75 @@ def check_password():
         # Password correct.
         return True
 
+import streamlit as st
+from deta import Deta
+
+def is_username_available(username):
+    deta = Deta(st.secrets["data_key"])
+    db = deta.Base("USERS")
+    return db.get(username.lower()) is None
+
+def register():
+    st.title("User Registration")
+
+    with st.form("registration_form"):
+        new_username = st.text_input("New Username")
+        new_password = st.text_input("New Password", type="password")
+        confirm_new_password = st.text_input("Confirm New Password", type="password")
+
+        if st.form_submit_button("Register"):
+            if new_password == confirm_new_password:
+                if len(new_password) >= 8:  # Check password length
+                    if is_username_available(new_username):
+                        deta = Deta(st.secrets["data_key"])
+                        db = deta.Base("USERS")
+                        db.put({"username": new_username.lower(), "password": new_password, "api_key": ""})
+                        st.success("Registration Successful. Please log in.")
+                    else:
+                        st.error("Username already exists. Please choose a different username.")
+                else:
+                    st.error("Password must be at least 8 characters long.")
+            else:
+                st.error("Passwords do not match. Please try again.")
+
+def password_entered(username, password):
+    """Checks whether a password entered by the user is correct."""
+    deta = Deta(st.secrets["data_key"])
+    db = deta.Base("USERS")
+    user = db.get(username.lower())
+
+    if user and user["password"] == password:
+        st.session_state["password_correct"] = True
+        return True
+    else:
+        st.session_state["password_correct"] = False
+        return False
+
+def check_password1():
+    if "password_correct" not in st.session_state:
+        # First run, show inputs for username + password.
+        st.text_input("Username", key="username")
+        st.text_input("Password", type="password", key="password")
+        login_button = st.button("Login")
+
+        if login_button:
+            username = st.session_state["username"]
+            password = st.session_state["password"]
+
+            if password_entered(username, password):
+                del st.session_state["password"]  # don't store username + password
+                del st.session_state["username"]
+                return True
+            else:
+                st.error("😕 User not known or password incorrect")
+                return False
+        return False
+    else:
+        # Password correct.
+        return True
 
 
-if check_password():
+if check_password1():
     
     selected2 = option_menu(None, ["Home",'Search',"Assistant"],
                             icons=['house', 'files','robot'],
