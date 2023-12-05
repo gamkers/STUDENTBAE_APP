@@ -188,10 +188,12 @@ def check_password():
     """Returns `True` if the user had a correct password."""
 
     def password_entered():
-        """Checks whether a password entered by the user is correct."""
-        if (
-            st.session_state["username"] in st.secrets["user"] and st.session_state["password"] == st.secrets["pass"]
-        ):
+      deta = Deta(st.secrets["data_key"])
+      db = deta.Base("USERS")
+      db_content = db.fetch().items
+
+      for item in db_content:
+        if item["username"] == username and item["password"] == password:
             st.session_state["password_correct"] = True
             del st.session_state["password"]  # don't store username + password
             del st.session_state["username"]
@@ -220,7 +222,7 @@ def check_password():
 from deta import Deta
 
 
-def password_entered(username, password):
+def password_entered1(username, password):
     """Checks whether a password entered by the user is correct."""
     deta = Deta(st.secrets["data_key"])
     db = deta.Base("USERS")
