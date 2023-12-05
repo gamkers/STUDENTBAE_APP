@@ -252,14 +252,14 @@ def password_entered(username, password):
     """Checks whether a password entered by the user is correct."""
     deta = Deta(st.secrets["data_key"])
     db = deta.Base("USERS")
-    user = db.get(username.lower())
+    db_content = db.fetch().items
 
-    if user and user["password"] == password:
-        st.session_state["password_correct"] = True
-        return True
-    else:
-        st.session_state["password_correct"] = False
-        return False
+    for item in db_content:
+        if item["username"] == username and item["password"] == password:
+            return True  # Return the API key for the user
+    
+    return False # Return None if credentials are not valid
+
 
 def check_password1():
     if "password_correct" not in st.session_state:
