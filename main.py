@@ -227,8 +227,11 @@ from deta import Deta
 def is_username_available(username):
     deta = Deta(st.secrets["data_key"])
     db = deta.Base("USERS")
-    return db.get(username.lower()) is None
-
+    db_content = db.fetch().items
+    for item in db_content:
+      if item["username"] == username:
+        return False
+    return True
 def register():
     with st.form("registration_form"):
       
