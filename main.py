@@ -62,9 +62,7 @@ def pdf(s):
               k = j.split("/")
               for i in k:
                   if ".pdf" in i:
-                      st.write(i)
-              if st.button(f'DOWNLOAD {i[-6:]}'):
-                st.components.v1.iframe(j)
+                      st.components.v1.iframe(j)
     except:
        st.error("PDF NOT Found")
 def webscrap_mcq(command): 
