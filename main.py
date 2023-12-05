@@ -314,7 +314,7 @@ if check_password():
 
         options = st.multiselect(
             'What you Looking for?',
-            ['PDF', 'PPT', 'Courses', 'Research papers','Hacker Rank',"MCQ's",'Question Papers', 'E-BOOKS']
+            ['PDF', 'PPT', 'Courses', 'Research papers','Question Papers', 'E-BOOKS']
         )
 
         n = st.slider('File Count', 0, 130, 25)
