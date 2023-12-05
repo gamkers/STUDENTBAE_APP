@@ -249,7 +249,7 @@ def register():
                 if is_username_available(new_username):
                     deta = Deta(st.secrets["data_key"])
                     db = deta.Base("USERS")
-                    db.put({"username": new_username.lower(), "password": new_password, "api_key": ""})
+                    db.put({"username": new_username.lower(), "password": new_password})
                     st.success("Registration Successful. Please log in.")
                 else:
                     st.error("Username already exists. Please choose a different username.")
@@ -288,10 +288,7 @@ def check_password():
             else:
                 st.error("😕 User not known or password incorrect")
                 return False
-        
-        st.text_input("New Username", key="new_username")
-        st.text_input("New Password", type="password", key="new_password")
-        st.text_input("Confirm New Password", type="password", key="confirm_new_password")
+      
         register_button = st.button("Register")
         
         if register_button:
