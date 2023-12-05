@@ -60,8 +60,7 @@ def pdf(s):
         if ".pdf" in j:
             pdf_title = j.split("/")[-1]
             st.header(pdf_title)
-            if st.button(f'DOWNLOAD {pdf_title[-6:]} '):
-                st.components.v1.iframe(j)
+            st.markdown(f'<a href="{j}">DOWNLOAD</a>', unsafe_allow_html=True)
 
 def webscrap_mcq(command): 
     links=[]
