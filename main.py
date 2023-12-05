@@ -242,7 +242,7 @@ def register():
       new_username = st.text_input("New Username", key="new_username", value=st.session_state.registration_state["new_username"])
       new_password = st.text_input("New Password", type="password", key="new_password", value=st.session_state.registration_state["new_password"])
       confirm_new_password = st.text_input("Confirm New Password", type="password", key="confirm_new_password", value=st.session_state.registration_state["confirm_new_password"])
-      register_button = st.button("Register")
+      register_button = st.form_submit_button("Register")
   
       if register_button:
           if new_password == confirm_new_password:
