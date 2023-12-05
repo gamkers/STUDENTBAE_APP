@@ -63,7 +63,7 @@ def pdf(s):
               for i in k:
                   if ".pdf" in i:
                       st.write(i)
-              if st.button(f'DOWNLOAD {i}'):
+              if st.button(f'DOWNLOAD {i[-6:]}'):
                 st.components.v1.iframe(j)
     except:
        st.error("PDF NOT Found")
