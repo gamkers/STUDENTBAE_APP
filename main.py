@@ -182,23 +182,25 @@ st.markdown(hide_menu_style, unsafe_allow_html=True)
 
 #         st.write("_______________________________________________________________________________")
 
-import streamlit as st
-
 def check_password():
     """Returns `True` if the user had a correct password."""
 
     def password_entered():
-      deta = Deta(st.secrets["data_key"])
-      db = deta.Base("USERS")
-      db_content = db.fetch().items
+        deta = Deta(st.secrets["data_key"])
+        db = deta.Base("USERS")
+        db_content = db.fetch().items
 
-      for item in db_content:
-        if item["username"] == st.session_state["username"] and item["password"] == st.session_state["password"]:
-            st.session_state["password_correct"] = True
-            del st.session_state["password"]  # don't store username + password
-            del st.session_state["username"]
-        else:
-            st.session_state["password_correct"] = False
+        entered_username = st.session_state["username"]
+        entered_password = st.session_state["password"]
+
+        for item in db_content:
+            if item["username"] == entered_username and item["password"] == entered_password:
+                st.session_state["password_correct"] = True
+                del st.session_state["password"]  # don't store username + password
+                del st.session_state["username"]
+                return
+
+        st.session_state["password_correct"] = False
 
     if "password_correct" not in st.session_state:
         # First run, show inputs for username + password.
@@ -218,6 +220,7 @@ def check_password():
     else:
         # Password correct.
         return True
+
 
 from deta import Deta
 
