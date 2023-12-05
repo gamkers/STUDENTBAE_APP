@@ -208,6 +208,8 @@ def check_password():
         # First run, show inputs for username + password.
         st.text_input("Username", key="username")
         st.text_input("Password", type="password", key="password")
+        local_css("style.css")
+        remote_css('https://fonts.googleapis.com/icon?family=Material+Icons')
         login_button = st.button("Login")
         
 
